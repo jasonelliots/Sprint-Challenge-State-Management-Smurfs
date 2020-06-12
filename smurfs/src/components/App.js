@@ -12,7 +12,9 @@ import { listContext } from "../contexts/listContext";
 
 const App = () => {
   const [smurfs, setSmurfs] = useState([]);
-  const [formValues, setFormValues] = useState("");
+  const [formValues, setFormValues] = useState({name: '', height: '', age: ''});
+  const [refresh, setRefresh] = useState(true)
+
 
   useEffect(() => {
     axios
@@ -24,7 +26,7 @@ const App = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [smurfs]);
+  }, [refresh]); 
 
   const onChange = (e) => {
     const name = e.target.name;
@@ -39,17 +41,17 @@ const App = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    let newSmurf = {
-      name: formValues.name,
-      age: formValues.age,
-      height: formValues.height,
-    };
+    // let newSmurf = {
+    //   name: formValues.name,
+    //   age: formValues.age,
+    //   height: formValues.height,
+    // };
 
     axios
-      .post("http://localhost:3333/smurfs", newSmurf)
+      .post("http://localhost:3333/smurfs", formValues)
       .then((res) => {
         console.log(res);
-        setSmurfs([res.data, ...smurfs]);
+        setSmurfs(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -60,6 +62,7 @@ const App = () => {
           age: "",
           height: "",
         });
+        setRefresh(!refresh); 
       });
   };
 

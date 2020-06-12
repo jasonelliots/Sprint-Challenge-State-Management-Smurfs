@@ -9,7 +9,7 @@ export const SmurfList = () => {
     <>
       {smurfs.map((smurf) => {
         return (
-          <div>
+          <div key={smurf.id}> 
             <h2>Name: {smurf.name} </h2>
             <p>Age: {smurf.age}</p>
             <p>Height: {smurf.height}</p>
