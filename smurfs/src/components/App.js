@@ -1,16 +1,83 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./App.css";
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <h1>SMURFS! 2.0 W/ Redux</h1>
-        <div>Welcome to your state management version of Smurfs!</div>
-        <div>Start inside of your `src/index.js` file!</div>
-        <div>Have fun!</div>
-      </div>
-    );
-  }
-}
+
+//components
+import { SmurfForm } from "./SmurfForm";
+import { SmurfList } from "./SmurfList";
+
+//contexts
+import { formContext } from "../contexts/formContext";
+import { listContext } from "../contexts/listContext";
+
+const App = () => {
+  const [smurfs, setSmurfs] = useState([]);
+  const [formValues, setFormValues] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3333/smurfs")
+      .then((res) => {
+        console.log(res);
+        setSmurfs(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [smurfs]);
+
+  const onChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    let newSmurf = {
+      name: formValues.name,
+      age: formValues.age,
+      height: formValues.height,
+    };
+
+    axios
+      .post("http://localhost:3333/smurfs", newSmurf)
+      .then((res) => {
+        console.log(res);
+        setSmurfs([res.data, ...smurfs]);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setFormValues({
+          name: "",
+          age: "",
+          height: "",
+        });
+      });
+  };
+
+  return (
+    <div className="App">
+      <h1>SMURFS! 2.0 W/ Context</h1>
+
+      <listContext.Provider value={{ smurfs }}>
+        <SmurfList />
+      </listContext.Provider>
+
+      <formContext.Provider
+        value={{ onChange, onSubmit, formValues, setFormValues }}
+      >
+        <SmurfForm />
+      </formContext.Provider>
+    </div>
+  );
+};
 
 export default App;

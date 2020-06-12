@@ -23,10 +23,25 @@ In this challenge, you are to build a Smurfs village utilizing context or Redux 
 Demonstrate your understanding of this Sprint's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your project manager.
 
 - [ ] What problem does the context API help solve?
+
+We don’t have to pass props down from component to component anymore! Can now store data/state on a context object and retrieve from that directly. 
+
 - [ ] In your own words, describe `actions`, `reducers` and the `store` and their role in Redux. What does each piece do? Why is the store known as a 'single source of truth' in a redux application?
+
+Actions are packets of information that contain a type and can contain data. When these actions are called, they are then passed to the reducer. The reducer is a function that takes in the action as an argument and updates state according to the type (case) and data. State is housed in the store - it is known as the single source of truth in a redux application because that is where the global state lives. 
+
 - [ ] What is the difference between Application state and Component state? When would be a good time to use one over the other?
+
+Application state is global and component state is typically localized to a component. Use application state when you have many components in different sections of the component tree that need to access the same info, use component state when only that component or it’s direct child needs the info. 
+
 - [ ] Describe `redux-thunk`, what does it allow us to do? How does it change our `action-creators`?
+
+Redux-thunk allows us to use async functions with redux. It changes our action-creators by allowing us to return a function. For example, because thunk has access to dispatch we can dispatch and action after making an axios request depending on the response. 
+
 - [ ] What is your favorite state management system you've learned and this sprint? Please explain why!
+
+Well, context API seems the simplest, so in one sense that’s my favorite for building these little toy projects we have. But I can see the utility of redux and how it can be powerful for organizing large scale applications. Keeping different aspects of the application separate (actions, reducers) and having one central place to store applications. 
+
 
 ## Project Set Up
 
